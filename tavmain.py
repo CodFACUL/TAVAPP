@@ -13,7 +13,7 @@ def load_database():
         pd.read_feather('tavbase/regressao_regiao.feather'), \
         pd.read_feather('tavbase/localizacao.feather')
 
-gs, cla_con, clu_pai, reg_mer, reg_reg = load_database()
+gs, cla_con, clu_pai, reg_mer, reg_reg, coordenadas = load_database()
 rg_mer = reg_mer.copy()
 rg_mer['ano'] = rg_mer['ds'].dt.year
 
@@ -44,14 +44,14 @@ with taberp:
             ['Order Date', 'Product Name', 'Quantity', 'Sales', 'Profit']
         ])
     clu_pai_cli = clu_pai[clu_pai['referencia'] == gs_con['Country'].values[0]]    
-    st.dataframe(clu_pai[clu_pai['referencia'] == gs_con['Country'].values[0]]
-        ['Country', 'm_entrega', 'm_lucro', 'm_vendas', 'm_qtde', 'f_vendas', 'f_lucro', 'r_dias'])
+    st.dataframe(clu_pai_cli[
+        ['referencia', 'm_entrega', 'm_lucro', 'm_vendas', 'm_qtde', 'f_vendas', 'f_lucro', 'r_dias']])
     st.dataframe(clu_pai_cli[
        ['cluster', 'clm_entrega', 'clm_lucro', 'clm_vendas', 'clm_qtde', \
         'clf_vendas', 'cls_lucro', 'clr_dias']])
 with tabbi:
     st.header('Dados do Business Intelligence')
-    with sd.expander('Mercado'):
+    with st.expander('Mercado'):
         aggm = st.selectbox('Agregador Mercado, ', ['sum', 'mean'])
         st.dataframe(rg_mer.pivot_table(index='Market', columns='ano',
             values='yhat', aggfunc=aggm, fill_value=0))
