@@ -16,6 +16,8 @@ def load_database():
 gs, cla_con, clu_pai, reg_mer, reg_reg, coordenadas = load_database()
 rg_mer = reg_mer.copy()
 rg_mer['ano'] = rg_mer['ds'].dt.year
+rg_reg = reg_reg.copy()
+rg_reg['ano'] = rg_reg['ds'].dt.year
 
 taberp, tabbi, tabstore = st.tabs(['Sistema Interno', 'Gestão', 'E-Commerce'])
 
